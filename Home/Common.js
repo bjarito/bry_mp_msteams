@@ -12,7 +12,7 @@ var configs = {
     }
 }
 
-var mode = location.href.search('odfrops.github.io') >= 0 ? 'development' : 'default'
+var mode = location.href.search('bjarito.github.io') >= 0 ? 'development' : 'default'
 var config = configs[mode]
 
 var BaseURL = "https://" + config.domain + "/"
@@ -20,6 +20,8 @@ var BaseAPIURI = BaseURL + "api/"
 
 var basePath = "/Home"
 
+// FIXME: This is supposed to be a private key!
+var sharedKey = "da3bfe2b41a29ac8d3d32eb0aa10b9d91cf7"
 
 // Reprototypings.
 
@@ -54,7 +56,6 @@ function Redirect(q) {
 }
 
 function GetRedirectURL(q) {
-    console.log(q)
     // Honour base relative path.
     var currentPath = window.location.pathname.indexOf(basePath)
     var basePrefix = window.location.pathname.substring(0, currentPath)
@@ -70,8 +71,24 @@ function ForgotPassword () {
     window.open(BaseURL + "login/forgot", "_blank")
 }
 
-function GetAttendeeURL (meetingid) {
-    return BaseURL + meetingid + '?hmm=true'
+function generateAttendeePayload(id, name, email) {
+    var bodyString = sharedKey + id + name + email
+    var body = {
+        "client": "msteams",
+        "id": id,
+        "name": name,
+        "email": email,
+        "signature": sha256(bodyString)
+    }
+    return encodeURIComponent(btoa(JSON.stringify(body)));
+}
+
+function GetAttendeeURL (meetingid, id, name, email) {
+    var retURL = BaseURL + meetingid + '?hmm=true'
+    if (id !== undefined && name !== undefined && email !== undefined) {
+        retURL = retURL + '&i=' + generateAttendeePayload(id, name, email)
+    }
+    return retURL
 }
 
 function GetPresenterURL (meetingid) {
@@ -80,12 +97,12 @@ function GetPresenterURL (meetingid) {
 }
 
 function GetLogoutURL (redirect) {
-    var url = window.location.protocol + '//' + window.location.hostname + GetRedirectURL('Login.html')
+    var url = window.location.protocol + '//' + window.location.host + GetRedirectURL('Login.html')
     return url + '?redirect=' + encodeURIComponent(redirect)
 }
 
 function GetContentURL (file, params) {
-    var url = window.location.protocol + '//' + window.location.hostname + GetRedirectURL(file)
+    var url = window.location.protocol + '//' + window.location.host + GetRedirectURL(file)
     var paramString = params.map(function (param) {
         return param.key + '=' + param.value
     }).join('&')
@@ -202,6 +219,8 @@ if (window.angular) {
                     }
                 })
         }
+
+        API.config = config
 
         return API
     }])

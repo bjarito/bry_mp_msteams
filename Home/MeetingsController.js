@@ -40,7 +40,8 @@
     }
 
     $scope.GoToMeetings = function() {
-        window.open('https://app.meet.ps/dashboard/meetings')
+        var baseHref = "https://" + AngularServices.config.host
+        window.open(baseHref + "/dashboard/meetings")
     }
 
     $scope.Logout = function() {

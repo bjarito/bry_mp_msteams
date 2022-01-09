@@ -1,0 +1,42 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.8/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.8",
+  "version": "1.0.32",
+  "id": "9720c6de-a181-4f1d-969b-7640cc969edb",
+  "packageName": "com.microsoft.teams.extension",
+  "developer": {
+    "name": "MeetingPulse",
+    "websiteUrl": "https://meet.ps",
+    "privacyUrl": "https://meet.ps/privacy-policy/",
+    "termsOfUseUrl": "https://meet.ps/terms-of-service/"
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "name": {
+    "short": "MeetingPulse (L)",
+    "full": "MeetingPulse Audience Tools"
+  },
+  "description": {
+    "short": "Enhance video meetings with Q&A, polling, surveys, quizzes, and interactions.",
+    "full": "MeetingPulse provides a flexible suite of interactivity tools that make meetings more engaging and valuable. As we continue to work, learn, and attend events remotely, active participation in online meetings has become more important than ever. When meeting sizes grow beyond 10 people, tools are needed to efficiently gain insights from participants. Better meetings drive increased employee satisfaction, improved customer experiences, and more effective learning.\nMeetingPulse allows you to enable real-time interactions like:\n- Animated reaction emojis\n- Q&A (with or without moderation)\n- Pre-, post-, and in- meeting surveys\n- Live agendas and brainstorms\n- Polls and voting\n- Quizzes, and raffles\n\nTypes of meetings where MeetingPulse is used often:\n- Meetings with 10+ participants\n- Company Town Hall\n- All-hands\n- Annual General Meetings\n- Board meetings\n- Product/sales kick-off\n- Human Resources & benefits enrollment\n- Corporate announcements\nIn order to use this app you need to have an active subscription with MeetingPulse. Don’t have a MeetingPulse account? [Sign up](https://app.meet.ps/dashboard/login/signup)"
+  },
+  "accentColor": "#FFFFFF",
+  "configurableTabs": [
+    {
+      "configurationUrl": "https://bjarito.github.io/bry_mp_msteams/Home/TabConfigure.html",
+      "canUpdateConfiguration": false,
+      "scopes": ["groupchat"],
+      "context": [
+        "meetingChatTab",
+        "meetingDetailsTab",
+        "meetingSidePanel"
+      ]
+    }
+  ],
+  "permissions": ["identity", "messageTeamMembers"],
+  "validDomains": [
+    "app.meet.ps"
+  ]
+}

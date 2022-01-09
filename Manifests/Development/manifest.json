@@ -25,7 +25,7 @@
   "accentColor": "#FFFFFF",
   "configurableTabs": [
     {
-      "configurationUrl": "https://odfrops.github.io/meetps-teams/Home/TabConfigure.html",
+      "configurationUrl": "https://bjarito.github.io/bry_mp_msteams//Home/TabConfigure.html",
       "canUpdateConfiguration": false,
       "scopes": ["groupchat"],
       "context": [
