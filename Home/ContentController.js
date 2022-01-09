@@ -54,6 +54,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function Init() {
         var mode = GetMode()
+        alert(mode)
         if (mode === 'AttendeeHide') {
             DisplayAttendee(true)
         } else if (mode === 'Attendee') {
