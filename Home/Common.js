@@ -114,7 +114,8 @@ function GetAttendeeURL (meetingid, id, name, email) {
 
 function GetPresenterURL (meetingid) {
     var User = getCurrentUser()
-    alert(JSON.stringify(User))
+    console.log(BaseURL + 'presenter/' + meetingid + '?t=' + User.ClientToken + '&hmm=true')
+    alert(JSON.stringify(User.ClientToken))
     return BaseURL + 'presenter/' + meetingid + '?t=' + User.ClientToken + '&hmm=true'
 }
 
