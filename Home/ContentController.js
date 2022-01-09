@@ -72,9 +72,6 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
                 return 'Attendee'
             } else {
                 if ($scope.user == $scope.creator) {
-                    console.log("test debug")
-                    console.log($scope)
-                    // return 'Attendee'
                     return 'Presenter'
                 } else {
                     return 'Attendee'
@@ -91,7 +88,6 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
         } else if ($scope.frameContext === 'content') {
             var User = getCurrentUser()
             if (User && 'ClientToken' in User) {
-                // return 'Attendee'
                 return 'Presenter'
             } else {
                 if ($scope.user == $scope.creator) {
