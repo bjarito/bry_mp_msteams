@@ -97,12 +97,12 @@ function GetPresenterURL (meetingid) {
 }
 
 function GetLogoutURL (redirect) {
-    var url = window.location.protocol + '//' + window.location.host + GetRedirectURL('Login.html')
+    var url = window.location.protocol + '//' + window.location.hostname + GetRedirectURL('Login.html')
     return url + '?redirect=' + encodeURIComponent(redirect)
 }
 
 function GetContentURL (file, params) {
-    var url = window.location.protocol + '//' + window.location.host + GetRedirectURL(file)
+    var url = window.location.protocol + '//' + window.location.hostname + GetRedirectURL(file)
     var paramString = params.map(function (param) {
         return param.key + '=' + param.value
     }).join('&')
