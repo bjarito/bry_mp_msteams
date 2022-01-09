@@ -73,8 +73,8 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
                 return 'AttendeeHide'
             } else {
                 if ($scope.user == $scope.creator) {
-                    return 'Attendee'
-                    // return 'Presenter'
+                    //return 'Attendee'
+                    return 'Presenter'
                 } else {
                     return 'Attendee'
                 }
