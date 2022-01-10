@@ -70,7 +70,6 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function GetAttendeeMode() {
-        var User = getCurrentUser()
         if (User && 'ClientToken' in User) {
             if ($scope.frameContext === 'sidePanel') {
                 return 'AttendeeHide'
@@ -133,36 +132,23 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
         StartMonitor()
     }
 
-    var attendeeMonitor = null
-    var presenterMonitor = null
+    var monitor = null
 
-    function StartMonitor() {
-        attendeeMonitor = setInterval(function () {
-            if (GetAttendeeMode() === 'Logout') {
-                $scope.GotoLogoutPage('attendee')
-            }
-        }, 5000)
-        presenterMonitor = setInterval(function () {
-            if (GetPresenterMode() === 'Logout') {
-                $scope.GotoLogoutPage('presenter')
+    function StartAttendeeMonitor() {
+        monitor = setInterval(function () {
+            if (GetAttendeeMode() === 'Logout' || GetPresenterMode() === 'Logout') {
+                $scope.GotoLogoutPage()
             }
         }, 5000)
     }
 
-    function StopMonitor(user) {
-        if (user == 'attendee') {
-            clearInterval(attendeeMonitor)
-        } else {
-            clearInterval(presenterMonitor)
-        }
+    function StopMonitor() {
+        clearInterval(monitor)
     }
 
-    $scope.GotoLogoutPage = function (user) {
-        if (attendeeMonitor !== null) {
-            StopMonitor(user)
-        }
-        if (presenterMonitor !== null) {
-            StopMonitor(user)
+    $scope.GotoLogoutPage = function () {
+        if (monitor !== null) {
+            StopMonitor()
         }
         SaveUser(null)
         window.location.href = GetLogoutURL(window.location.href)
