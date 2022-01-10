@@ -14,6 +14,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function OpenMeeting() {
         microsoftTeams.getContext(function (context) {
+            console.log(context)
             if (context) {
                 if (context.frameContext) {
                     $scope.frameContext = context.frameContext
@@ -53,15 +54,12 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function Init() {
         var mode = GetMode()
-        if (User && 'ClientToken' in User && typeof User.Token !== "undefined") {
-            if ($scope.frameContext === 'sidePanel') {
-                DisplayAttendee(true)
-            }
-            if (mode === 'Presenter') {
-                DisplayPresenter()
-            } else if (mode === 'Attendee') {
-                DisplayAttendee(false)
-            }
+        if (mode === 'AttendeeHide') {
+            DisplayAttendee(true)
+        } else if (mode === 'Attendee') {
+            DisplayAttendee(false)
+        } else if (mode === 'Presenter') {
+            DisplayPresenter()
         } else { // Logout
             $scope.GotoLogoutPage()
         }
@@ -69,10 +67,14 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function GetMode() {
         if (User && 'ClientToken' in User) {
-            if ($scope.user == $scope.creator) {
-                return 'Presenter'
+            if ($scope.frameContext === 'sidePanel') {
+                return 'AttendeeHide'
             } else {
-                return 'Attendee'
+                if ($scope.user == $scope.creator) {
+                    return 'Presenter'
+                } else {
+                    return 'Attendee'
+                }
             }
         } else {
             return 'Logout'
@@ -80,6 +82,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function DisplayAttendee(hide) {
+        console.log('attendee', getCurrentUser())
         var attURL = GetAttendeeURL(meeting_id, $scope.id, $scope.user, $scope.email)
         $('#iframe').attr('src', attURL)
         if (hide) {
@@ -92,6 +95,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function DisplayPresenter() {
+        console.log('presenter', getCurrentUser())
         $('#iframe').attr('src', GetPresenterURL(meeting_id))
         $('.header').show()
         $('.content').show()
