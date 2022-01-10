@@ -53,7 +53,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function Init() {
         var mode = GetMode()
-        if (User && 'ClientToken' in User) {
+        if (User && 'ClientToken' in User && typeof User.Token !== "undefined") {
             if ($scope.frameContext === 'sidePanel') {
                 DisplayAttendee(true)
             }
