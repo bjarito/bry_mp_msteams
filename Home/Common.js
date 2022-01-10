@@ -2,47 +2,42 @@
 
 // Intended API is chosen based on where the MSTeams assets are being served.
 // Order is important: first matching object wins.
-var configs = {
-    "development": {
-        "domain": "dev.meet.ps"
+var configs = [
+    {
+        "assets": "assets.meet.ps/msteams-addin-dev",
+        "host": "dev.meet.ps",
+        "clientKey": "da3bfe2b41a29ac8d3d32eb0aa10b9d91cf7"
     },
-    "default": {
-        "domain": "app.meet.ps"
+    {
+        "assets": "assets.meet.ps/msteams-addin",
+        "host": "app.meet.ps",
+        "clientKey": "da3bfe2b41a29ac8d3d32eb0aa10b9d91cf7"
     },
-    "local": {
-        "domain": "local.meet.ps:8443"
+    {
+        "assets": "assets.meet.ps/msteams-addin-dev",
+        "host": "dev.meet.ps",
+        "clientKey": "da3bfe2b41a29ac8d3d32eb0aa10b9d91cf7"
     }
-}
-
-// FIXME: This is supposed to be a private key!
-var sharedKey = "da3bfe2b41a29ac8d3d32eb0aa10b9d91cf7"
-
-var mode
-if (location.href.search('bjarito.github.io') >= 0) {
-    mode = "development"
-} else if (location.href.search('local-msteams.meet.ps') >= 0) {
-    mode = "local"
-} else {
-    mode = "default"
-}
+];
 
 // IE11 compat
-// var config
-// for (var i = 0; i < configs.length; i++) {
-//     var candidate = configs[i]
-//     if (window.location.href.indexOf(candidate.assets) !== -1) {
-//         config = config || candidate
-//     }
-// }
-
+var config
+for (var i = 0; i < configs.length; i++) {
+    var candidate = configs[i]
+    if (window.location.href.indexOf(candidate.assets) !== -1) {
+        config = config || candidate
+    }
+}
 // Last ditch scenario
-// config = config || configs[configs.length - 1]
-config = configs[mode]
+config = config || configs[configs.length - 1]
 
-var BaseURL = "https://" + config.domain + "/"
+var BaseURL = "https://" + config.host + "/"
 var BaseAPIURI = BaseURL + "api/"
 
 var basePath = "/Home"
+
+// FIXME: This is supposed to be a private key!
+var sharedKey = config.clientKey
 
 // Reprototypings.
 
@@ -114,8 +109,6 @@ function GetAttendeeURL (meetingid, id, name, email) {
 
 function GetPresenterURL (meetingid) {
     var User = getCurrentUser()
-    console.log(BaseURL + 'presenter/' + meetingid + '?t=' + User.ClientToken + '&hmm=true')
-    alert(JSON.stringify(User))
     return BaseURL + 'presenter/' + meetingid + '?t=' + User.ClientToken + '&hmm=true'
 }
 
