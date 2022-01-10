@@ -8,6 +8,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     $scope.email = ''
     $scope.creator = decodeURIComponent(getQueryStringValue('creator'))
     var meeting_id = getQueryStringValue('meet')
+    var User = getCurrentUser()
 
     microsoftTeams.initialize()
 
@@ -28,7 +29,6 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function ValidateToken() {
-        var User = getCurrentUser()
         var headers = {
             "Content-Type": "application/json",
             "Accept": "application/json",
@@ -53,35 +53,21 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function Init() {
         var mode = GetMode()
-        var User = getCurrentUser()
         if (User && 'ClientToken' in User) {
             if ($scope.frameContext === 'sidePanel') {
                 DisplayAttendee(true)
-            } else {
-                if (mode === 'Presenter') {
-                    DisplayPresenter()
-                } else if (mode === 'Attendee') {
-                    DisplayAttendee(false)
-                }
+            }
+            if (mode === 'Presenter') {
+                DisplayPresenter()
+            } else if (mode === 'Attendee') {
+                DisplayAttendee(false)
             }
         } else { // Logout
             $scope.GotoLogoutPage()
         }
     }
 
-    function GetAttendeeMode() {
-        var User = getCurrentUser()
-        if (User && 'ClientToken' in User) {
-            if ($scope.frameContext === 'sidePanel') {
-                return 'AttendeeHide'
-            }
-        } else {
-            return 'Logout'
-        }
-    }
-
     function GetMode() {
-        var User = getCurrentUser()
         if (User && 'ClientToken' in User) {
             if ($scope.user == $scope.creator) {
                 return 'Presenter'
@@ -116,7 +102,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function StartMonitor() {
         monitor = setInterval(function () {
-            if (!User) {
+            if (GetMode() === 'Logout') {
                 $scope.GotoLogoutPage()
             }
         }, 5000)
