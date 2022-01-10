@@ -54,38 +54,63 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     function Init() {
         var presenterMode = GetPresenterMode()
         var attendeeMode = GetAttendeeMode()
-        var User = getCurrentUser()
-        if (User && 'ClientToken' in User && 'Token' in User) {
-            if (presenterMode === 'Presenter') {
-                DisplayPresenter()
-            } else if (attendeeMode === 'Attendee') {
-                DisplayAttendee(false)
-            } else if (attendeeMode !== 'AttendeeHide') { // Logout
-                $scope.GotoLogoutPage()
-            }
-            if (attendeeMode === 'AttendeeHide') {
-                DisplayAttendee(true)
-            }
+        if (attendeeMode === 'AttendeeHide') {
+            DisplayAttendee(true)
+        } else if (attendeeMode === 'Attendee') {
+            DisplayAttendee(false)
+        } else { // Logout
+            $scope.GotoLogoutPage()
+        }
+        
+        if (presenterMode === 'Presenter') {
+            DisplayPresenter()
+        } else { // Logout
+            $scope.GotoLogoutPage()
         }
     }
 
     function GetAttendeeMode() {
         var User = getCurrentUser()
-        if (User && 'ClientToken' in User && 'Token' in User) {
+        if (User && 'ClientToken' in User) {
             if ($scope.frameContext === 'sidePanel') {
                 return 'AttendeeHide'
+            } else {
+                if ($scope.user !== $scope.creator) {
+                    return 'Attendee'
+                }
             }
+        } else {
+            return 'Logout'
         }
     }
 
     function GetPresenterMode() {
         var User = getCurrentUser()
-        if (User && 'ClientToken' in User && 'Token' in User) {
+        if (User && 'ClientToken' in User) {
             if ($scope.user == $scope.creator) {
                 return 'Presenter'
-            } else {
-                return 'Attendee'
             }
+        } else {
+            return 'Logout'
+        }
+    }
+
+    function GetModeOrigin() {
+        if ($scope.frameContext === 'sidePanel') {
+            return 'Attendee'
+        } else if ($scope.frameContext === 'content') {
+            var User = getCurrentUser()
+            if (User && 'ClientToken' in User) {
+                return 'Presenter'
+            } else {
+                if ($scope.user == $scope.creator) {
+                    return 'Presenter'
+                } else {
+                    return 'Attendee'
+                }
+            }
+        } else { // no case
+            return 'Logout'
         }
     }
 
@@ -110,15 +135,12 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     var monitor = null
 
-    function StartMonitor() {
-        var User = getCurrentUser()
+    function StartAttendeeMonitor() {
         monitor = setInterval(function () {
-            console.log('start monitor',User && 'ClientToken' in User)
-            if (!User) {
+            if (GetAttendeeMode() === 'Logout' || GetPresenterMode() === 'Logout') {
                 $scope.GotoLogoutPage()
             }
         }, 5000)
-        console.log('monitor', monitor)
     }
 
     function StopMonitor() {
