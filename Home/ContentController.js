@@ -95,25 +95,6 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
         }
     }
 
-    function GetModeOrigin() {
-        if ($scope.frameContext === 'sidePanel') {
-            return 'Attendee'
-        } else if ($scope.frameContext === 'content') {
-            var User = getCurrentUser()
-            if (User && 'ClientToken' in User) {
-                return 'Presenter'
-            } else {
-                if ($scope.user == $scope.creator) {
-                    return 'Logout'
-                } else {
-                    return 'Attendee'
-                }
-            }
-        } else { // no case
-            return 'Logout'
-        }
-    }
-
     function DisplayAttendee(hide) {
         var attURL = GetAttendeeURL(meeting_id, $scope.id, $scope.user, $scope.email)
         $('#iframe').attr('src', attURL)
