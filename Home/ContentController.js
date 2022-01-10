@@ -67,7 +67,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function GetMode() {
         var User = getCurrentUser()
-        if (User && 'ClientToken' in User) {
+        if (User && 'ClientToken' in User && 'Token' in User) {
             if ($scope.frameContext === 'sidePanel') {
                 return 'AttendeeHide'
             } else {
