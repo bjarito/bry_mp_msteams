@@ -8,13 +8,11 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     $scope.email = ''
     $scope.creator = decodeURIComponent(getQueryStringValue('creator'))
     var meeting_id = getQueryStringValue('meet')
-    var User = getCurrentUser()
 
     microsoftTeams.initialize()
 
     function OpenMeeting() {
         microsoftTeams.getContext(function (context) {
-            console.log(context)
             if (context) {
                 if (context.frameContext) {
                     $scope.frameContext = context.frameContext
@@ -54,33 +52,69 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function Init() {
-        var mode = GetMode()
-        if ($scope.frameContext === 'sidePanel') {
+        var presenterMode = GetPresenterMode()
+        var attendeeMode = GetAttendeeMode()
+        if (attendeeMode === 'AttendeeHide') {
             DisplayAttendee(true)
-        }
-        if (mode === 'Attendee') {
+        } else if (attendeeMode === 'Attendee') {
             DisplayAttendee(false)
-        } else if (mode === 'Presenter') {
+        } else if (presenterMode === 'Presenter') { // Logout
+            $scope.GotoLogoutPage()
+        }
+        
+        if (presenterMode === 'Presenter') {
             DisplayPresenter()
         } else { // Logout
             $scope.GotoLogoutPage()
         }
     }
 
-    function GetMode() {
+    function GetAttendeeMode() {
+        var User = getCurrentUser()
         if (User && 'ClientToken' in User) {
-            if ($scope.user == $scope.creator) {
-                return 'Presenter'
+            if ($scope.frameContext === 'sidePanel') {
+                return 'AttendeeHide'
             } else {
-                return 'Attendee'
+                if ($scope.user !== $scope.creator) {
+                    return 'Attendee'
+                }
             }
         } else {
             return 'Logout'
         }
     }
 
+    function GetPresenterMode() {
+        var User = getCurrentUser()
+        if (User && 'ClientToken' in User) {
+            if ($scope.user == $scope.creator) {
+                return 'Presenter'
+            }
+        } else {
+            return 'Logout'
+        }
+    }
+
+    function GetModeOrigin() {
+        if ($scope.frameContext === 'sidePanel') {
+            return 'Attendee'
+        } else if ($scope.frameContext === 'content') {
+            var User = getCurrentUser()
+            if (User && 'ClientToken' in User) {
+                return 'Presenter'
+            } else {
+                if ($scope.user == $scope.creator) {
+                    return 'Logout'
+                } else {
+                    return 'Attendee'
+                }
+            }
+        } else { // no case
+            return 'Logout'
+        }
+    }
+
     function DisplayAttendee(hide) {
-        console.log('attendee', getCurrentUser())
         var attURL = GetAttendeeURL(meeting_id, $scope.id, $scope.user, $scope.email)
         $('#iframe').attr('src', attURL)
         if (hide) {
@@ -93,7 +127,6 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function DisplayPresenter() {
-        console.log('presenter', getCurrentUser())
         $('#iframe').attr('src', GetPresenterURL(meeting_id))
         $('.header').show()
         $('.content').show()
@@ -104,7 +137,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function StartMonitor() {
         monitor = setInterval(function () {
-            if (GetMode() === 'Logout') {
+            if (GetAttendeeMode() === 'Logout' || GetPresenterMode === 'Presenter') {
                 $scope.GotoLogoutPage()
             }
         }, 5000)
