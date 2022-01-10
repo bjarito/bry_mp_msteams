@@ -55,6 +55,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
         var attendeeMode = GetAttendeeMode()
         var presenterMode = GetPresenterMode()
         var User = getCurrentUser()
+        console.log('init',User && 'ClientToken' in User)
         if (User && 'ClientToken' in User) {
             if (attendeeMode === 'AttendeeHide') {
                 DisplayAttendee(true)
@@ -116,10 +117,12 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     function StartMonitor() {
         var User = getCurrentUser()
         monitor = setInterval(function () {
+            console.log('start monitor',User && 'ClientToken' in User)
             if (User && 'ClientToken' in User) {
                 $scope.GotoLogoutPage()
             }
         }, 5000)
+        console.log('monitor', monitor)
     }
 
     function StopMonitor() {
