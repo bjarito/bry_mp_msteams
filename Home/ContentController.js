@@ -94,6 +94,25 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
         }
     }
 
+    function GetModeOrigin() {
+        if ($scope.frameContext === 'sidePanel') {
+            return 'Attendee'
+        } else if ($scope.frameContext === 'content') {
+            var User = getCurrentUser()
+            if (User && 'ClientToken' in User) {
+                return 'Presenter'
+            } else {
+                if ($scope.user == $scope.creator) {
+                    return 'Presenter'
+                } else {
+                    return 'Attendee'
+                }
+            }
+        } else { // no case
+            return 'Logout'
+        }
+    }
+
     function DisplayAttendee(hide) {
         var attURL = GetAttendeeURL(meeting_id, $scope.id, $scope.user, $scope.email)
         $('#iframe').attr('src', attURL)
@@ -103,41 +122,43 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
             $('.header').show()
         }
         $('.content').show()
-        StartAttendeeMonitor()
+        StartMonitor()
     }
 
     function DisplayPresenter() {
         $('#iframe').attr('src', GetPresenterURL(meeting_id))
         $('.header').show()
         $('.content').show()
-        StartPresenterMonitor()
+        StartMonitor()
     }
 
-    var monitor = null
+    var attendeeMonitor = null
+    var presenterMonitor = null
 
-    function StartAttendeeMonitor() {
-        monitor = setInterval(function () {
+    function StartMonitor() {
+        attendeeMonitor = setInterval(function () {
             if (GetAttendeeMode() === 'Logout') {
-                $scope.GotoLogoutPage()
+                $scope.GotoLogoutPage('attendee')
             }
         }, 5000)
-    }
-
-    function StartPresenterMonitor() {
-        monitor = setInterval(function () {
+        presenterMonitor = setInterval(function () {
             if (GetPresenterMode() === 'Logout') {
-                $scope.GotoLogoutPage()
+                $scope.GotoLogoutPage('presenter')
             }
         }, 5000)
     }
 
-    function StopMonitor() {
-        clearInterval(monitor)
+    function StopMonitor(user) {
+        if (user == 'attendee') {
+            clearInterval(attendeeMonitor)
+        } else {
+            clearInterval(presenterMonitor)
+        }
     }
 
-    $scope.GotoLogoutPage = function () {
+    $scope.GotoLogoutPage = function (user) {
         if (monitor !== null) {
-            StopMonitor()
+            StopMonitor(user)
         }
         SaveUser(null)
         window.location.href = GetLogoutURL(window.location.href)
