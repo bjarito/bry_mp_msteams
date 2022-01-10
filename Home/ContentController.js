@@ -138,7 +138,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function StartMonitor() {
         monitor = setInterval(function () {
-            if (GetAttendeeMode() === 'Logout' || GetPresenterMode === 'Presenter') {
+            if (GetAttendeeMode() === 'Logout' || GetPresenterMode === 'Logout') {
                 $scope.GotoLogoutPage()
             }
         }, 5000)
