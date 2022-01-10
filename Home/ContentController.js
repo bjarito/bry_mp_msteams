@@ -53,31 +53,42 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function Init() {
-        var mode = GetMode()
-        if (mode === 'AttendeeHide') {
+        var presenterMode = GetPresenterMode()
+        var attendeeMode = GetAttendeeMode()
+        if (attendeeMode === 'AttendeeHide') {
             DisplayAttendee(true)
-        } else if (mode === 'Attendee') {
+        } else if (attendeeMode === 'Attendee') {
             DisplayAttendee(false)
-        } else if (mode === 'Presenter') {
+        } else { // Logout
+            $scope.GotoLogoutPage()
+        }
+        
+        if (presenterMode === 'Presenter') {
             DisplayPresenter()
         } else { // Logout
             $scope.GotoLogoutPage()
         }
     }
 
-    function GetMode() {
-        var User = getCurrentUser()
-        console.log('getmode',User)
+    function GetAttendeeMode() {
         if (User && 'ClientToken' in User) {
             if ($scope.frameContext === 'sidePanel') {
                 return 'AttendeeHide'
             } else {
-                if ($scope.user == $scope.creator) {
-                    //return 'Attendee'
-                    return 'Presenter'
-                } else {
+                if ($scope.user !== $scope.creator) {
                     return 'Attendee'
                 }
+            }
+        } else {
+            return 'Logout'
+        }
+    }
+
+    function GetPresenterMode() {
+        var User = getCurrentUser()
+        if (User && 'ClientToken' in User) {
+            if ($scope.user == $scope.creator) {
+                return 'Presenter'
             }
         } else {
             return 'Logout'
@@ -128,7 +139,10 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function StartMonitor() {
         monitor = setInterval(function () {
-            if (GetMode() === 'Logout') {
+            if (GetAttendeeMode() === 'Logout') {
+                $scope.GotoLogoutPage()
+            }
+            if (GetPresenterMode() === 'Logout') {
                 $scope.GotoLogoutPage()
             }
         }, 5000)
