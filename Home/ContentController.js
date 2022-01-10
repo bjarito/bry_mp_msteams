@@ -78,9 +78,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
             if ($scope.frameContext === 'sidePanel') {
                 return 'AttendeeHide'
             } else {
-                if ($scope.user !== $scope.creator) {
-                    return 'Attendee'
-                }
+                return 'Attendee'
             }
         } else {
             return 'Logout'
