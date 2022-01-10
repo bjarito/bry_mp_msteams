@@ -118,7 +118,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
         var User = getCurrentUser()
         monitor = setInterval(function () {
             console.log('start monitor',User && 'ClientToken' in User)
-            if (User && 'ClientToken' in User && 'Token' in User) {
+            if (!User) {
                 $scope.GotoLogoutPage()
             }
         }, 5000)
