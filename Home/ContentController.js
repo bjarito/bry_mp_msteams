@@ -70,7 +70,6 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function GetAttendeeMode() {
-        var User = getCurrentUser()
         if (User && 'ClientToken' in User) {
             if ($scope.frameContext === 'sidePanel') {
                 return 'AttendeeHide'
@@ -104,23 +103,28 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
             $('.header').show()
         }
         $('.content').show()
-        StartMonitor()
+        StartAttendeeMonitor()
     }
 
     function DisplayPresenter() {
         $('#iframe').attr('src', GetPresenterURL(meeting_id))
         $('.header').show()
         $('.content').show()
-        StartMonitor()
+        StartPresenterMonitor()
     }
 
     var monitor = null
 
-    function StartMonitor() {
+    function StartAttendeeMonitor() {
         monitor = setInterval(function () {
             if (GetAttendeeMode() === 'Logout') {
                 $scope.GotoLogoutPage()
             }
+        }, 5000)
+    }
+
+    function StartPresenterMonitor() {
+        monitor = setInterval(function () {
             if (GetPresenterMode() === 'Logout') {
                 $scope.GotoLogoutPage()
             }
