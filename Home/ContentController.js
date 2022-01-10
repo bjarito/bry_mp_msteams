@@ -8,7 +8,6 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     $scope.email = ''
     $scope.creator = decodeURIComponent(getQueryStringValue('creator'))
     var meeting_id = getQueryStringValue('meet')
-    var User = getCurrentUser()
 
     microsoftTeams.initialize()
 
@@ -29,6 +28,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function ValidateToken() {
+        var User = getCurrentUser()
         var headers = {
             "Content-Type": "application/json",
             "Accept": "application/json",
@@ -54,8 +54,8 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     function Init() {
         var attendeeMode = GetAttendeeMode()
         var presenterMode = GetPresenterMode()
-        
-        if (User && 'ClientToken' in User && 'Token' in User) {
+        var User = getCurrentUser()
+        if (User && 'ClientToken' in User) {
             if (attendeeMode === 'AttendeeHide') {
                 DisplayAttendee(true)
             } else if (attendeeMode === 'Attendee') {
@@ -71,7 +71,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function GetAttendeeMode() {
-        if (User && 'ClientToken' in User && 'Token' in User) {
+        if (User && 'ClientToken' in User) {
             if ($scope.frameContext === 'sidePanel') {
                 return 'AttendeeHide'
             } else {
@@ -83,7 +83,8 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function GetPresenterMode() {
-        if (User && 'ClientToken' in User && 'Token' in User) {
+        var User = getCurrentUser()
+        if (User && 'ClientToken' in User) {
             if ($scope.user == $scope.creator) {
                 return 'Presenter'
             } 
@@ -112,8 +113,9 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     var monitor = null
 
     function StartMonitor() {
+        var User = getCurrentUser()
         monitor = setInterval(function () {
-            if (User && 'ClientToken' in User && 'Token' in User) {
+            if (User && 'ClientToken' in User) {
                 $scope.GotoLogoutPage()
             }
         }, 5000)
