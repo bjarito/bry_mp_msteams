@@ -53,30 +53,44 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function Init() {
-        var mode = GetMode()
-        if (mode === 'AttendeeHide') {
-            DisplayAttendee(true)
-        } else if (mode === 'Attendee') {
-            DisplayAttendee(false)
-        } else if (mode === 'Presenter') {
-            DisplayPresenter()
-        } else { // Logout
+        var attendeeMode = GetAttendeeMode()
+        var presenterMode = GetPresenterMode()
+        if (attendeeMode && presenterMode) {
+            if (attendeeMode === 'AttendeeHide') {
+                DisplayAttendee(true)
+            } else if (attendeeMode === 'Attendee') {
+                DisplayAttendee(false)
+            }
+            if (presenterMode === 'Presenter') {
+                DisplayPresenter()
+            } 
+        }
+        else { // Logout
             $scope.GotoLogoutPage()
         }
     }
 
-    function GetMode() {
+    function GetAttendeeMode() {
         var User = getCurrentUser()
         if (User && 'ClientToken' in User && 'Token' in User) {
             if ($scope.frameContext === 'sidePanel') {
                 return 'AttendeeHide'
             } else {
-                if ($scope.user == $scope.creator) {
-                    return 'Presenter'
-                } else {
+                if ($scope.user !== $scope.creator) {
                     return 'Attendee'
                 }
             }
+        } else {
+            return 'Logout'
+        }
+    }
+
+    function GetPresenterMode() {
+        var User = getCurrentUser()
+        if (User && 'ClientToken' in User && 'Token' in User) {
+            if ($scope.frameContext !== 'sidePanel' && $scope.user == $scope.creator) {
+                return 'Presenter'
+            } 
         } else {
             return 'Logout'
         }
@@ -105,7 +119,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function StartMonitor() {
         monitor = setInterval(function () {
-            if (GetMode() === 'Logout') {
+            if (GetAttendeeMode() === 'Logout' || GetPresenterMode() === 'Logout') {
                 $scope.GotoLogoutPage()
             }
         }, 5000)
