@@ -52,33 +52,40 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function Init() {
-        var mode = GetMode()
-        if (mode === 'AttendeeHide') {
-            DisplayAttendee(true)
-        }
-        if (mode === 'Attendee') {
-            DisplayAttendee(false)
-        } else if (mode === 'Presenter') {
-            DisplayPresenter()
-        } else if (mode !== 'AttendeeHide') { // Logout
-            $scope.GotoLogoutPage()
+        var presenterMode = GetPresenterMode()
+        var attendeeMode = GetAttendeeMode()
+        var User = getCurrentUser()
+        if (User && 'ClientToken' in User && 'Token' in User) {
+            if (presenterMode === 'Presenter') {
+                DisplayPresenter()
+            } else if (attendeeMode === 'Attendee') {
+                DisplayAttendee(false)
+            } else if (attendeeMode !== 'AttendeeHide') { // Logout
+                $scope.GotoLogoutPage()
+            }
+            if (attendeeMode === 'AttendeeHide') {
+                DisplayAttendee(true)
+            }
         }
     }
 
-    function GetMode() {
+    function GetAttendeeMode() {
         var User = getCurrentUser()
-        if (User && 'ClientToken' in User) {
+        if (User && 'ClientToken' in User && 'Token' in User) {
             if ($scope.frameContext === 'sidePanel') {
                 return 'AttendeeHide'
-            } else {
-                if ($scope.user == $scope.creator) {
-                    return 'Presenter'
-                } else {
-                    return 'Attendee'
-                }
             }
-        } else {
-            return 'Logout'
+        }
+    }
+
+    function GetPresenterMode() {
+        var User = getCurrentUser()
+        if (User && 'ClientToken' in User && 'Token' in User) {
+            if ($scope.user == $scope.creator) {
+                return 'Presenter'
+            } else {
+                return 'Attendee'
+            }
         }
     }
 
@@ -91,7 +98,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
             $('.header').show()
         }
         $('.content').show()
-        if (!hide) StartMonitor()
+        StartMonitor()
     }
 
     function DisplayPresenter() {
@@ -104,11 +111,14 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     var monitor = null
 
     function StartMonitor() {
+        var User = getCurrentUser()
         monitor = setInterval(function () {
-            if (GetMode() === 'Logout') {
+            console.log('start monitor',User && 'ClientToken' in User)
+            if (!User) {
                 $scope.GotoLogoutPage()
             }
         }, 5000)
+        console.log('monitor', monitor)
     }
 
     function StopMonitor() {
