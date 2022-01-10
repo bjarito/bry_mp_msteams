@@ -67,6 +67,9 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
         } else { // Logout
             $scope.GotoLogoutPage()
         }
+        console.log('presenterMode',presenterMode)
+        console.log('attendeeMode',attendeeMode)
+
     }
 
     function GetAttendeeMode() {
