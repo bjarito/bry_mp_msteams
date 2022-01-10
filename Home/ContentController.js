@@ -1,5 +1,7 @@
 var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
+    var User = getCurrentUser()
+
     ValidateToken()
 
     $scope.frameContext = ''
@@ -8,7 +10,6 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     $scope.email = ''
     $scope.creator = decodeURIComponent(getQueryStringValue('creator'))
     var meeting_id = getQueryStringValue('meet')
-    var User = getCurrentUser()
 
     microsoftTeams.initialize()
 
