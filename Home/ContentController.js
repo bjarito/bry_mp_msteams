@@ -13,7 +13,6 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function OpenMeeting() {
         microsoftTeams.getContext(function (context) {
-            console.log(context)
             if (context) {
                 if (context.frameContext) {
                     $scope.frameContext = context.frameContext
@@ -71,6 +70,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function GetAttendeeMode() {
+        var User = getCurrentUser()
         if (User && 'ClientToken' in User) {
             if ($scope.frameContext === 'sidePanel') {
                 return 'AttendeeHide'
@@ -115,7 +115,6 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function DisplayAttendee(hide) {
-        console.log('attendee', getCurrentUser())
         var attURL = GetAttendeeURL(meeting_id, $scope.id, $scope.user, $scope.email)
         $('#iframe').attr('src', attURL)
         if (hide) {
@@ -128,7 +127,6 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function DisplayPresenter() {
-        console.log('presenter', getCurrentUser())
         $('#iframe').attr('src', GetPresenterURL(meeting_id))
         $('.header').show()
         $('.content').show()
@@ -156,7 +154,6 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
         if (monitor !== null) {
             StopMonitor()
         }
-        // console.log(GetLogoutURL(window.location.href))
         SaveUser(null)
         window.location.href = GetLogoutURL(window.location.href)
     }
