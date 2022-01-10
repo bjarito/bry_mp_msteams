@@ -54,7 +54,6 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function Init() {
         var mode = GetMode()
-        alert(mode)
         if (mode === 'AttendeeHide') {
             DisplayAttendee(true)
         } else if (mode === 'Attendee') {
@@ -104,6 +103,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function DisplayAttendee(hide) {
+        console.log('attendee', getCurrentUser())
         var attURL = GetAttendeeURL(meeting_id, $scope.id, $scope.user, $scope.email)
         $('#iframe').attr('src', attURL)
         if (hide) {
@@ -116,7 +116,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function DisplayPresenter() {
-        alert(GetPresenterURL(meeting_id))
+        console.log('attendee', getCurrentUser())
         $('#iframe').attr('src', GetPresenterURL(meeting_id))
         $('.header').show()
         $('.content').show()
