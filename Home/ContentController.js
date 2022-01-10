@@ -117,7 +117,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function DisplayPresenter() {
         alert(GetPresenterURL(meeting_id))
-        $('#iframe').attr('src', GetPresenterURL(meeting_id))
+        $('#iframe').attr('src', 'data:text/html;charset=utf-8,' + GetPresenterURL(meeting_id))
         $('.header').show()
         $('.content').show()
         StartMonitor()
