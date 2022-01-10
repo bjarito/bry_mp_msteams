@@ -56,7 +56,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
         var presenterMode = GetPresenterMode()
         var User = getCurrentUser()
         console.log('init',User && 'ClientToken' in User)
-        if (User && 'ClientToken' in User) {
+        if (User && 'ClientToken' in User && 'Token' in User) {
             if (attendeeMode === 'AttendeeHide') {
                 DisplayAttendee(true)
             } else if (attendeeMode === 'Attendee') {
@@ -73,7 +73,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function GetAttendeeMode() {
         var User = getCurrentUser()
-        if (User && 'ClientToken' in User) {
+        if (User && 'ClientToken' in User && 'Token' in User) {
             if ($scope.frameContext === 'sidePanel') {
                 return 'AttendeeHide'
             } else {
@@ -86,7 +86,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function GetPresenterMode() {
         var User = getCurrentUser()
-        if (User && 'ClientToken' in User) {
+        if (User && 'ClientToken' in User && 'Token' in User) {
             if ($scope.user == $scope.creator) {
                 return 'Presenter'
             } 
@@ -118,7 +118,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
         var User = getCurrentUser()
         monitor = setInterval(function () {
             console.log('start monitor',User && 'ClientToken' in User)
-            if (User && 'ClientToken' in User) {
+            if (User && 'ClientToken' in User && 'Token' in User) {
                 $scope.GotoLogoutPage()
             }
         }, 5000)
