@@ -67,6 +67,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function GetMode() {
         var User = getCurrentUser()
+        console.log('getmode',User)
         if (User && 'ClientToken' in User) {
             if ($scope.frameContext === 'sidePanel') {
                 return 'AttendeeHide'
@@ -116,7 +117,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function DisplayPresenter() {
-        console.log('attendee', getCurrentUser())
+        console.log('presenter', getCurrentUser())
         $('#iframe').attr('src', GetPresenterURL(meeting_id))
         $('.header').show()
         $('.content').show()
