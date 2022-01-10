@@ -58,9 +58,9 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
         }
         if (mode === 'Attendee') {
             DisplayAttendee(false)
-        } else if (mode === 'Presenter' && mode !=='AttendeeHide') {
+        } else if (mode === 'Presenter') {
             DisplayPresenter()
-        } else { // Logout
+        } else if (mode !== 'AttendeeHide') { // Logout
             $scope.GotoLogoutPage()
         }
     }
