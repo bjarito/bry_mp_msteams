@@ -158,7 +158,10 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     $scope.GotoLogoutPage = function (user) {
-        if (monitor !== null) {
+        if (attendeeMonitor !== null) {
+            StopMonitor(user)
+        }
+        if (presenterMonitor !== null) {
             StopMonitor(user)
         }
         SaveUser(null)
