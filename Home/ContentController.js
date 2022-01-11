@@ -53,7 +53,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function Init() {
         var mode = GetMode()
-        if (mode === 'AttendeeHide') {
+        if ($scope.frameContext === 'sidePanel') {
             DisplayAttendee(true)
         } else if (mode === 'Attendee') {
             DisplayAttendee(false)
@@ -67,15 +67,11 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     function GetMode() {
         var User = getCurrentUser()
         if (User && 'ClientToken' in User) {
-            if ($scope.frameContext === 'sidePanel') {
-                return 'AttendeeHide'
+            if ($scope.user == $scope.creator) {
+                // return 'Attendee'
+                return 'Presenter'
             } else {
-                if ($scope.user == $scope.creator) {
-                    // return 'Attendee'
-                    return 'Presenter'
-                } else {
-                    return 'Attendee'
-                }
+                return 'Attendee'
             }
         } else {
             return 'Logout'
