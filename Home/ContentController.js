@@ -65,32 +65,40 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     function GetMode() {
         var User = getCurrentUser()
         if (User && 'ClientToken' in User) {
-            if ($scope.user == $scope.creator) {
-                // return 'Attendee'
-                return 'Presenter'
+            if ($scope.frameContext === 'sidePanel') {
+                microsoftTeams.settings.registerOnSaveHandler(function (saveEvent) {
+                    var url = GetContentURL('SidePanel.html', [
+                        { key: 'creator', value: teamsContext['loginHint']},
+                        { key: 'meet', value: meetId }
+                    ])
+                    microsoftTeams.settings.setSettings({
+                        contentUrl: url,
+                        entityId: meetId,
+                        suggestedDisplayName: meetId
+                    })
+                    saveEvent.notifySuccess()
+                })
             } else {
-                return 'Attendee'
-            }
-        } else {
-            return 'Logout'
-        }
-    }
-
-    function GetModeOrigin() {
-        if ($scope.frameContext === 'sidePanel') {
-            return 'Attendee'
-        } else if ($scope.frameContext === 'content') {
-            var User = getCurrentUser()
-            if (User && 'ClientToken' in User) {
-                return 'Presenter'
-            } else {
+                microsoftTeams.settings.registerOnSaveHandler(function (saveEvent) {
+                    var url = GetContentURL('Content.html', [
+                        { key: 'creator', value: teamsContext['loginHint']},
+                        { key: 'meet', value: meetId }
+                    ])
+                    microsoftTeams.settings.setSettings({
+                        contentUrl: url,
+                        entityId: meetId,
+                        suggestedDisplayName: meetId
+                    })
+                    saveEvent.notifySuccess()
+                })
                 if ($scope.user == $scope.creator) {
-                    return 'Logout'
+                    // return 'Attendee'
+                    return 'Presenter'
                 } else {
                     return 'Attendee'
                 }
             }
-        } else { // no case
+        } else {
             return 'Logout'
         }
     }
