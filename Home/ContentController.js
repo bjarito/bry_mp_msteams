@@ -10,6 +10,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     var meeting_id = getQueryStringValue('meet')
 
     microsoftTeams.initialize()
+    console.log(microsoftTeams.settings)
 
     function OpenMeeting() {
         microsoftTeams.getContext(function (context) {
@@ -94,7 +95,6 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function DisplayPresenter() {
-        alert(2)
         $('#iframe').attr('src', GetPresenterURL(meeting_id))
         $('.header').show()
         $('.content').show()
