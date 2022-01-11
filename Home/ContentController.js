@@ -54,18 +54,17 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     function Init() {
         var presenterMode = GetPresenterMode()
         var attendeeMode = GetAttendeeMode()
+        if (presenterMode === 'Presenter') {
+            DisplayPresenter()
+        } else if (presenterMode === 'Attendee') {
+            DisplayAttendee(false)
+        } else { // Logout
+            $scope.GotoLogoutPage()
+        }
+
         if ($scope.frameContext === 'sidePanel') {
             if (attendeeMode === 'AttendeeHide') {
                 DisplayAttendee(true)
-            } else { // Logout
-                $scope.GotoLogoutPage()
-            }
-        }
-        if ($scope.frameContext !== 'sidePanel') {
-            if (presenterMode === 'Presenter') {
-                DisplayPresenter()
-            } else if (presenterMode === 'Attendee') {
-                DisplayAttendee(false)
             } else { // Logout
                 $scope.GotoLogoutPage()
             }
