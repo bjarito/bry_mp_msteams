@@ -15,7 +15,7 @@ body, .content {
     flex: 1;
 }
 
-.content, .sidepanel {
+.content {
     display: flex;
     flex-direction: column;
 }
@@ -34,7 +34,7 @@ body, .content {
     background-color: #6c7074;
 }
 
-#iframe, #sidepanel-iframe {
+#iframe {
     flex: 1;
     background-color: #3b4044;
     border: 0;

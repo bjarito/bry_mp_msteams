@@ -81,7 +81,6 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     function DisplayAttendee(hide) {
         var attURL = GetAttendeeURL(meeting_id, $scope.user, $scope.user, $scope.user)
         if (hide) {
-            alert('2')
             $('.content').hide()
             $('#sidepanel-iframe').attr('src', attURL)
             $('.sidepanel').show()
@@ -98,7 +97,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
         $('#iframe').attr('src', GetPresenterURL(meeting_id))
         $('.header').show()
         $('.content').show()
-        StartMonitor()
+        // StartMonitor()
     }
 
     var monitor = null
