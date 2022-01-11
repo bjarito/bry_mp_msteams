@@ -60,7 +60,8 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
             } else { // Logout
                 $scope.GotoLogoutPage()
             }
-        } else {
+        }
+        if ($scope.frameContext !== 'sidePanel') {
             if (presenterMode === 'Presenter') {
                 DisplayPresenter()
             } else if (presenterMode === 'Attendee') {
