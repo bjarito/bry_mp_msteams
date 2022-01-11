@@ -98,10 +98,15 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function DisplayAttendee(hide) {
         var attURL = GetAttendeeURL(meeting_id, $scope.id, $scope.user, $scope.email)
-        $('#iframe').attr('src', attURL)
         if (hide) {
+            $('#iframe').hide()
+            $('#sidePanel-iframe').show()
+            $('#sidePanel-iframe').attr('src', attURL)
             $('.header').hide()
         } else {
+            $('#iframe').show()
+            $('#sidePanel-iframe').hide()
+            $('#iframe').attr('src', attURL)
             $('.header').show()
         }
         $('.content').show()
@@ -109,6 +114,8 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function DisplayPresenter() {
+        $('#iframe').show()
+        $('#sidePanel-iframe').hide()
         $('#iframe').attr('src', GetPresenterURL(meeting_id))
         $('.header').show()
         $('.content').show()
@@ -119,6 +126,8 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function StartMonitor() {
         monitor = setInterval(function () {
+            console.log('startMonitorA', GetAttendeeMode)
+            console.log('startMonitorP', GetPresenterMode)
             if (GetAttendeeMode() === 'Logout' || GetPresenterMode === 'Logout') {
                 $scope.GotoLogoutPage()
             }
