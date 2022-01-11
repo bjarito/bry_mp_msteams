@@ -104,6 +104,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function StartMonitor() {
         monitor = setInterval(function () {
+            alert(GetMode())
             if (GetMode() === 'Logout') {
                 $scope.GotoLogoutPage()
             }
