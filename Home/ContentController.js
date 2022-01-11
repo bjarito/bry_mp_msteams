@@ -81,7 +81,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     function DisplayAttendee(hide) {
         var attURL = GetAttendeeURL(meeting_id, $scope.user, $scope.user, $scope.user)
         if (hide) {
-            alert('1')
+            alert('2')
             $('.content').hide()
             $('#sidepanel-iframe').attr('src', attURL)
             $('.sidepanel').show()
