@@ -82,36 +82,18 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
         }
     }
 
-    function GetModeOrigin() {
-        if ($scope.frameContext === 'sidePanel') {
-            return 'Attendee'
-        } else if ($scope.frameContext === 'content') {
-            var User = getCurrentUser()
-            if (User && 'ClientToken' in User) {
-                return 'Presenter'
-            } else {
-                if ($scope.user == $scope.creator) {
-                    return 'Logout'
-                } else {
-                    return 'Attendee'
-                }
-            }
-        } else { // no case
-            return 'Logout'
-        }
-    }
-
-    function DisplayAttendee(hide = true) {
+    function DisplayAttendee(hide) {
         var attURL = GetAttendeeURL(meeting_id, $scope.user, $scope.user, $scope.user)
         if (hide) {
             $('#iframe').hide()
-            $('#sidePanel-iframe').show()
+            alert('sidepanel')
             $('#sidePanel-iframe').attr('src', attURL)
+            $('#sidePanel-iframe').show()
             $('.header').hide()
         } else {
-            $('#iframe').show()
             $('#sidePanel-iframe').hide()
             $('#iframe').attr('src', attURL)
+            $('#iframe').show()
             $('.header').show()
         }
         $('.content').show()
