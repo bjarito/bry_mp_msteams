@@ -15,6 +15,7 @@
     })
 
     microsoftTeams.settings.registerOnSaveHandler(function (saveEvent) {
+        alert(teamsContext['frameContext'])
         if (teamsContext['frameContext'] === 'content') {
             var url = GetContentURL('Content.html', [
                 { key: 'creator', value: teamsContext['loginHint']},
