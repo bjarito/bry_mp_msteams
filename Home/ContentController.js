@@ -94,6 +94,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function DisplayPresenter() {
+        alert(1)
         $('#iframe').attr('src', GetPresenterURL(meeting_id))
         $('.header').show()
         $('.content').show()
@@ -104,7 +105,6 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function StartMonitor() {
         monitor = setInterval(function () {
-            alert(GetMode())
             if (GetMode() === 'Logout') {
                 $scope.GotoLogoutPage()
             }
