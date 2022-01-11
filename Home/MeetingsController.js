@@ -15,10 +15,17 @@
     })
 
     microsoftTeams.settings.registerOnSaveHandler(function (saveEvent) {
-        var url = GetContentURL('Content.html', [
-            { key: 'creator', value: teamsContext['loginHint']},
-            { key: 'meet', value: meetId }
-        ])
+        if (teamsContext['frameContext'] === 'content') {
+            var url = GetContentURL('Content.html', [
+                { key: 'creator', value: teamsContext['loginHint']},
+                { key: 'meet', value: meetId }
+            ])
+        } else if (teamsContext['frameContext'] === 'sidePanel') {
+            var url = GetContentURL('SidePanel.html', [
+                { key: 'creator', value: teamsContext['loginHint']},
+                { key: 'meet', value: meetId }
+            ])
+        }
         microsoftTeams.settings.setSettings({
             contentUrl: url,
             entityId: meetId,
