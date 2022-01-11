@@ -52,29 +52,15 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function Init() {
-        var presenterMode = GetPresenterMode()
-        var attendeeMode = GetAttendeeMode()
-        if (presenterMode === 'Presenter') {
-            DisplayPresenter()
-        } else if (presenterMode === 'Attendee') {
-            DisplayAttendee(false)
+        var mode = GetMode()
+        if (mode === 'AttendeeHide') {
+            DisplayAttendee()
         } else { // Logout
             $scope.GotoLogoutPage()
         }
-
-        if ($scope.frameContext === 'sidePanel') {
-            if (attendeeMode === 'AttendeeHide') {
-                DisplayAttendee(true)
-            } else { // Logout
-                $scope.GotoLogoutPage()
-            }
-        }
-        console.log('presenterMode',presenterMode)
-        console.log('attendeeMode',attendeeMode)
-
     }
 
-    function GetAttendeeMode() {
+    function GetMode() {
         var User = getCurrentUser()
         if (User && 'ClientToken' in User) {
             return 'AttendeeHide'
@@ -83,34 +69,10 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
         }
     }
 
-    function GetPresenterMode() {
-        var User = getCurrentUser()
-        if (User && 'ClientToken' in User) {
-            if ($scope.user == $scope.creator) {
-                return 'Presenter'
-            } else {
-                return 'Attendee'
-            }
-        } else {
-            return 'Logout'
-        }
-    }
-
-    function DisplayAttendee(hide) {
-        var attURL = GetAttendeeURL(meeting_id, $scope.id, $scope.user, $scope.email)
+    function DisplayAttendee() {
+        var attURL = GetAttendeeURL(meeting_id, $scope.user, $scope.user, $scope.user)
         $('#iframe').attr('src', attURL)
-        if (hide) {
-            $('.header').hide()
-        } else {
-            $('.header').show()
-        }
-        $('.content').show()
-        StartMonitor()
-    }
-
-    function DisplayPresenter() {
-        $('#iframe').attr('src', GetPresenterURL(meeting_id))
-        $('.header').show()
+        $('.header').hide()
         $('.content').show()
         StartMonitor()
     }
@@ -119,9 +81,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function StartMonitor() {
         monitor = setInterval(function () {
-            console.log('startMonitorA', GetAttendeeMode)
-            console.log('startMonitorP', GetPresenterMode)
-            if (GetAttendeeMode() === 'Logout' || GetPresenterMode === 'Logout') {
+            if (GetMode() === 'Logout') {
                 $scope.GotoLogoutPage()
             }
         }, 5000)
