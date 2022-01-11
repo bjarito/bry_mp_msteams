@@ -85,24 +85,20 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     function DisplayAttendee(hide) {
         var attURL = GetAttendeeURL(meeting_id, $scope.user, $scope.user, $scope.user)
         if (hide) {
-            $('#iframe').hide()
-            alert('sidepanel')
-            $('#sidePanel-iframe').attr('src', attURL)
-            $('#sidePanel-iframe').show()
-            $('.header').hide()
+            alert('1')
+            $('.content').hide()
+            $('#sidepanel-iframe').attr('src', attURL)
+            $('.sidepanel').show()
         } else {
-            $('#sidePanel-iframe').hide()
+            $('.sidepanel').hide()
             $('#iframe').attr('src', attURL)
-            $('#iframe').show()
-            $('.header').show()
+            $('.content').show()
         }
-        $('.content').show()
         StartMonitor()
     }
 
     function DisplayPresenter() {
-        $('#iframe').show()
-        $('#sidePanel-iframe').hide()
+        $('.sidepanel').hide()
         $('#iframe').attr('src', GetPresenterURL(meeting_id))
         $('.header').show()
         $('.content').show()
