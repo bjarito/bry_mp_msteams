@@ -67,15 +67,13 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
         if (User && 'ClientToken' in User) {
             if ($scope.frameContext === 'sidePanel') {
                 if ($scope.user == $scope.creator) {
-                    return 'AttendeeHide'
-                    // return 'PresenterHide'
+                    return 'PresenterHide'
                 } else {
                     return 'AttendeeHide'
                 }
             } else {
                 if ($scope.user == $scope.creator) {
-                    return 'Attendee'
-                    // return 'Presenter'
+                    return 'Presenter'
                 } else {
                     return 'Attendee'
                 }
