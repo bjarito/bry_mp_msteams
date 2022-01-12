@@ -3,14 +3,11 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     ValidateToken()
 
     $scope.frameContext = ''
-    $scope.id = ''
     $scope.user = ''
-    $scope.email = ''
     $scope.creator = decodeURIComponent(getQueryStringValue('creator'))
     var meeting_id = getQueryStringValue('meet')
 
     microsoftTeams.initialize()
-    console.log(microsoftTeams.settings)
 
     function OpenMeeting() {
         microsoftTeams.getContext(function (context) {
@@ -19,9 +16,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
                     $scope.frameContext = context.frameContext
                 }
                 if (context.loginHint) {
-                    $scope.id = context.userObjectId
                     $scope.user = context.loginHint
-                    $scope.email = context.userPrincipalName
                 }
             }
             Init()
@@ -58,8 +53,10 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
             DisplayAttendee(true)
         } else if (mode === 'Attendee') {
             DisplayAttendee(false)
+        } else if (mode === 'PresenterHide') {
+            DisplayPresenter(true)
         } else if (mode === 'Presenter') {
-            DisplayPresenter()
+            DisplayPresenter(false)
         } else { // Logout
             $scope.GotoLogoutPage()
         }
@@ -69,9 +66,14 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
         var User = getCurrentUser()
         if (User && 'ClientToken' in User) {
             if ($scope.frameContext === 'sidePanel') {
-                return 'AttendeeHide'
+                if ($scope.user == $scope.creator) {
+                    return 'PresenterHide'
+                } else {
+                    return 'AttendeeHide'
+                }
             } else {
                 if ($scope.user == $scope.creator) {
+                    // return 'Attendee'
                     return 'Presenter'
                 } else {
                     return 'Attendee'
@@ -84,7 +86,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function DisplayAttendee(hide) {
         var attURL = GetAttendeeURL(meeting_id, $scope.user, $scope.user, $scope.user)
-        $('#sidepanel-iframe').attr('src', attURL)
+        $('#iframe').attr('src', attURL)
         if (hide) {
             $('.header').hide()
         } else {
@@ -94,11 +96,15 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
         StartMonitor()
     }
 
-    function DisplayPresenter() {
+    function DisplayPresenter(hide) {
         $('#iframe').attr('src', GetPresenterURL(meeting_id))
-        $('.header').show()
+        if (hide) {
+            $('.header').hide()
+        } else {
+            $('.header').show()
+        }
         $('.content').show()
-        // StartMonitor()
+        StartMonitor()
     }
 
     var monitor = null
