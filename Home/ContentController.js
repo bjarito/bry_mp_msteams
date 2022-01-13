@@ -11,6 +11,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function OpenMeeting() {
         microsoftTeams.getContext(function (context) {
+            console.log('context', context)
             if (context) {
                 if (context.frameContext) {
                     $scope.frameContext = context.frameContext
@@ -24,7 +25,6 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function ValidateToken() {
-        console.log('scope', $scope)
         if ($scope.user == $scope.creator) {
             var User = getCurrentUser()
             if (User && 'ClientToken' in User) {
