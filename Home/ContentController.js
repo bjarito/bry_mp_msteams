@@ -7,9 +7,9 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     $scope.creator = decodeURIComponent(getQueryStringValue('creator'))
     var meeting_id = getQueryStringValue('meet')
 
-    microsoftTeams.initialize()
-
+    
     function OpenMeeting() {
+        microsoftTeams.initialize()
         microsoftTeams.getContext(function (context) {
             if (context) {
                 console.log(context)
