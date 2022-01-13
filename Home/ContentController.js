@@ -25,35 +25,35 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function ValidateToken() {
-        if ($scope.user == $scope.creator) {
-            var User = getCurrentUser()
-            if (User && 'ClientToken' in User) {
-                var headers = {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "Authorization": "Bearer " + User.Token
-                }
+        // if ($scope.user == $scope.creator) {
+        //     var User = getCurrentUser()
+        //     if (User && 'ClientToken' in User) {
+        //         var headers = {
+        //             "Content-Type": "application/json",
+        //             "Accept": "application/json",
+        //             "Authorization": "Bearer " + User.Token
+        //         }
 
-                AngularServices.GET("meetings", headers).
-                    then(function (response) {
-                        switch (response.status) {
-                            case 200:
-                                OpenMeeting()
-                                break
-                            case 401:
-                                AngularServices.RenewTokenOrLogout(OpenMeeting)
-                                break
-                            default:
-                                // Redirect("Login.html")
-                                break
-                        }
-                    })
-            } else {
-                Logout()
-            }
-        } else {
+        //         AngularServices.GET("meetings", headers).
+        //             then(function (response) {
+        //                 switch (response.status) {
+        //                     case 200:
+        //                         OpenMeeting()
+        //                         break
+        //                     case 401:
+        //                         AngularServices.RenewTokenOrLogout(OpenMeeting)
+        //                         break
+        //                     default:
+        //                         // Redirect("Login.html")
+        //                         break
+        //                 }
+        //             })
+        //     } else {
+        //         Logout()
+        //     }
+        // } else {
             OpenMeeting()
-        }
+        // }
     }
 
     function Init() {
