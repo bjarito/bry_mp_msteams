@@ -47,7 +47,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
                     }
                 })
         } else {
-            $scope.GotoLogoutPage()
+            Logout()
         }
     }
 
@@ -128,6 +128,10 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
         if (monitor !== null) {
             StopMonitor()
         }
+        Logout()
+    }
+
+    function Logout() {
         SaveUser(null)
         window.location.href = GetLogoutURL(window.location.href)
     }
