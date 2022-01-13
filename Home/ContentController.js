@@ -25,26 +25,30 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function ValidateToken() {
         var User = getCurrentUser()
-        var headers = {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + User.Token
-        }
+        if (User && 'ClientToken' in User) {
+            var headers = {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": "Bearer " + User.Token
+            }
 
-        AngularServices.GET("meetings", headers).
-            then(function (response) {
-                switch (response.status) {
-                    case 200:
-                        OpenMeeting()
-                        break
-                    case 401:
-                        AngularServices.RenewTokenOrLogout(OpenMeeting)
-                        break
-                    default:
-                        // Redirect("Login.html")
-                        break
-                }
-            })
+            AngularServices.GET("meetings", headers).
+                then(function (response) {
+                    switch (response.status) {
+                        case 200:
+                            OpenMeeting()
+                            break
+                        case 401:
+                            AngularServices.RenewTokenOrLogout(OpenMeeting)
+                            break
+                        default:
+                            // Redirect("Login.html")
+                            break
+                    }
+                })
+        } else {
+            $scope.GotoLogoutPage()
+        }
     }
 
     function Init() {
