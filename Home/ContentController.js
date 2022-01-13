@@ -11,7 +11,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function OpenMeeting() {
         microsoftTeams.getContext(function (context) {
-            console.log('context', context)
+            console.log(context)
             if (context) {
                 if (context.frameContext) {
                     $scope.frameContext = context.frameContext
