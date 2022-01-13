@@ -24,6 +24,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function ValidateToken() {
+        console.log('validateToken', $scope.user == $scope.creator)
         if ($scope.user == $scope.creator) {
             var User = getCurrentUser()
             if (User && 'ClientToken' in User) {
@@ -57,6 +58,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
 
     function Init() {
         var mode = GetMode()
+        console.log('mode', mode)
         if (mode === 'AttendeeHide') {
             DisplayAttendee(true)
         } else if (mode === 'Attendee') {
