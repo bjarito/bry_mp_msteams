@@ -24,30 +24,34 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function ValidateToken() {
-        var User = getCurrentUser()
-        if (User && 'ClientToken' in User) {
-            var headers = {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "Authorization": "Bearer " + User.Token
-            }
+        if ($scope.user == $scope.creator) {
+            var User = getCurrentUser()
+            if (User && 'ClientToken' in User) {
+                var headers = {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + User.Token
+                }
 
-            AngularServices.GET("meetings", headers).
-                then(function (response) {
-                    switch (response.status) {
-                        case 200:
-                            OpenMeeting()
-                            break
-                        case 401:
-                            AngularServices.RenewTokenOrLogout(OpenMeeting)
-                            break
-                        default:
-                            // Redirect("Login.html")
-                            break
-                    }
-                })
+                AngularServices.GET("meetings", headers).
+                    then(function (response) {
+                        switch (response.status) {
+                            case 200:
+                                OpenMeeting()
+                                break
+                            case 401:
+                                AngularServices.RenewTokenOrLogout(OpenMeeting)
+                                break
+                            default:
+                                // Redirect("Login.html")
+                                break
+                        }
+                    })
+            } else {
+                Logout()
+            }
         } else {
-            Logout()
+            OpenMeeting()
         }
     }
 
@@ -67,23 +71,23 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function GetMode() {
-        var User = getCurrentUser()
-        if (User && 'ClientToken' in User) {
-            if ($scope.frameContext === 'sidePanel') {
-                if ($scope.user == $scope.creator) {
+        if ($scope.user == $scope.creator) {
+            var User = getCurrentUser()
+            if (User && 'ClientToken' in User) {
+                if ($scope.frameContext === 'sidePanel') {
                     return 'PresenterHide'
                 } else {
-                    return 'AttendeeHide'
+                    return 'Presenter'
                 }
             } else {
-                if ($scope.user == $scope.creator) {
-                    return 'Presenter'
-                } else {
-                    return 'Attendee'
-                }
+                return 'Logout'
             }
         } else {
-            return 'Logout'
+            if ($scope.frameContext === 'sidePanel') {
+                return 'AttendeeHide'
+            } else {
+                return 'Attendee'
+            }
         }
     }
 
