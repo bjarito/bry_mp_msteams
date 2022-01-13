@@ -24,8 +24,7 @@ var myCtrl = ['$scope', 'AngularServices', function ($scope, AngularServices) {
     }
 
     function ValidateToken() {
-        console.log('validateToken1', $scope.user)
-        console.log('validateToken2', $scope.creator)
+        console.log('scope', $scope)
         if ($scope.user == $scope.creator) {
             var User = getCurrentUser()
             if (User && 'ClientToken' in User) {
