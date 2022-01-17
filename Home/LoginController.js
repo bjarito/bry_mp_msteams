@@ -9,7 +9,7 @@
     })
 
     $scope.OpenForgot = function() {
-        window.open('https://app.meet.ps/dashboard/login/forgot')
+        window.open(baseUrl + 'dashboard/login/forgot')
     }
 
     $scope.OpenHow = function() {
@@ -17,7 +17,7 @@
     }
 
     $scope.OpenSignUp = function() {
-        window.open('https://app.meet.ps/dashboard/login/signup')
+        window.open(baseUrl + 'dashboard/login/signup')
     }
 
     $scope.Login = function () {

@@ -52,6 +52,10 @@ Storage.prototype.getObj = function (key) {
 
 // Common funcs.
 
+function baseUrl() {
+    return BaseURL
+}
+
 function removeObj(myObjects, prop, value) {
     return myObjects.filter(function (val) {
         return val[prop] !== value
