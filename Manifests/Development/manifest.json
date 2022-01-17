@@ -15,8 +15,8 @@
     "outline": "outline.png"
   },
   "name": {
-    "short": "MeetingPulse - Dev",
-    "full": "MeetingPulse Audience Tools - Dev"
+    "short": "MeetingPulse (L)",
+    "full": "MeetingPulse Audience Tools"
   },
   "description": {
     "short": "Enhance video meetings with Q&A, polling, surveys, quizzes, and interactions.",
@@ -25,7 +25,7 @@
   "accentColor": "#FFFFFF",
   "configurableTabs": [
     {
-      "configurationUrl": "https://bjarito.github.io/bry_mp_msteams//Home/TabConfigure.html",
+      "configurationUrl": "https://bjarito.github.io/bry_mp_msteams/Home/TabConfigure.html",
       "canUpdateConfiguration": false,
       "scopes": ["groupchat"],
       "context": [
