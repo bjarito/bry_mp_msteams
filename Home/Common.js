@@ -1,43 +1,25 @@
-﻿// Available endpoints and their configs.
-
-// Intended API is chosen based on where the MSTeams assets are being served.
-// Order is important: first matching object wins.
-var configs = [
-    {
-        "assets": "assets.meet.ps/msteams-addin-dev",
-        "host": "dev.meet.ps",
-        "clientKey": "da3bfe2b41a29ac8d3d32eb0aa10b9d91cf7"
+﻿var configs = {
+    "development": {
+        "domain": "dev.meet.ps"
     },
-    {
-        "assets": "assets.meet.ps/msteams-addin",
-        "host": "app.meet.ps",
-        "clientKey": "da3bfe2b41a29ac8d3d32eb0aa10b9d91cf7"
+    "default": {
+        "domain": "app.meet.ps"
     },
-    {
-        "assets": "assets.meet.ps/msteams-addin-dev",
-        "host": "dev.meet.ps",
-        "clientKey": "da3bfe2b41a29ac8d3d32eb0aa10b9d91cf7"
-    }
-];
-
-// IE11 compat
-var config
-for (var i = 0; i < configs.length; i++) {
-    var candidate = configs[i]
-    if (window.location.href.indexOf(candidate.assets) !== -1) {
-        config = config || candidate
+    "local": {
+        "domain": "local.meet.ps:8443"
     }
 }
-// Last ditch scenario
-config = config || configs[configs.length - 1]
 
-var BaseURL = "https://" + config.host + "/"
+var mode = location.href.search('bjarito.github.io') >= 0 ? 'development' : 'default'
+var config = configs[mode]
+
+var BaseURL = "https://" + config.domain + "/"
 var BaseAPIURI = BaseURL + "api/"
 
 var basePath = "/Home"
 
 // FIXME: This is supposed to be a private key!
-var sharedKey = config.clientKey
+var sharedKey = 'da3bfe2b41a29ac8d3d32eb0aa10b9d91cf7'
 
 // Reprototypings.
 
